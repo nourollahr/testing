@@ -84,4 +84,31 @@ class SingleControllerTest extends TestCase
         $response->assertUnauthorized();
         $this->assertDatabaseMissing('comments', $data);
     }
+
+    public function testCommentMethodValidRequiredData()
+    {
+//        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->withHeaders([
+                'HTTP_X-Requested-with' => 'XMLHttpRequest',
+            ])->postJson(
+                route('single.comment', $post->id),
+                ['text' => '']
+            );
+
+        // for method post
+//        $response->assertSessionHasErrors([
+//            'text' => 'The text field is required.'
+//        ]);
+
+        // for method json
+        $response->assertJsonValidationErrors([
+                'text' => 'The text field is required.'
+        ]);
+    }
+
 }

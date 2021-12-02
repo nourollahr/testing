@@ -17,6 +17,10 @@ class SingleController extends Controller
 
     public function comment(Request $request, Post $post)
     {
+        $request->validate([
+            'text' => 'required'
+        ]);
+
         $user_id = auth()->user()->id;
         $post->comments()->create([
             'user_id' => $user_id,
