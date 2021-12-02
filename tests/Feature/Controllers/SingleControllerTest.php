@@ -45,12 +45,19 @@ class SingleControllerTest extends TestCase
         ])->make()->toArray();
 
         $response = $this->actingAs($user)
-            ->post(
+            ->withHeaders([
+                'HTTP_X-Requested-with' => 'XMLHttpRequest',
+            ])
+            ->postJson(
                 route('single.comment', $post->id),
                 ['text' => $data['text']]
             );
 
-        $response->assertRedirect(route('single', $post->id));
+        $response->assertOk()
+            ->assertJson([
+                'created' => true
+            ]);
+
         $this->assertDatabaseHas('comments', $data);
     }
 
@@ -66,12 +73,15 @@ class SingleControllerTest extends TestCase
 
         unset($data['user_id']);
 
-        $response = $this->post(
+        $response = $this
+            ->withHeaders([
+                'HTTP_X-Requested-with' => 'XMLHttpRequest',
+            ])->postJson(
                 route('single.comment', $post->id),
                 ['text' => $data['text']]
             );
 
-        $response->assertRedirect(route('login'));
+        $response->assertUnauthorized();
         $this->assertDatabaseMissing('comments', $data);
     }
 }
