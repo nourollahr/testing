@@ -39,7 +39,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = auth()->user()->posts()->create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'image' => $request->input('image'),
+        ]);
+
+        $post->tags()->attach($request->input('tags'));
+
+        return redirect()->route('post.index')
+            ->with('message', 'new post has been created');
     }
 
     /**

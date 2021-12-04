@@ -13,6 +13,8 @@ class PostControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $middlewares = ['web', 'admin'];
+
     /**
      * A basic feature test example.
      *
@@ -31,7 +33,7 @@ class PostControllerTest extends TestCase
 
         $this->assertEquals(
              request()->route()->middleware(),
-             ['web', 'admin']
+             $this->middlewares
         );
     }
 
@@ -53,7 +55,7 @@ class PostControllerTest extends TestCase
 
         $this->assertEquals(
             request()->route()->middleware(),
-            ['web', 'admin']
+            $this->middlewares
         );
     }
 
@@ -79,7 +81,35 @@ class PostControllerTest extends TestCase
 
         $this->assertEquals(
             request()->route()->middleware(),
-            ['web', 'admin']
+            $this->middlewares
+        );
+    }
+
+    public function testStoreMethod()
+    {
+        $user = User::factory()->admin()->create();
+        $tags = Tag::factory()->count(rand(1,5))->create();
+        $data = Post::factory()
+            ->state(['user_id' => $user->id])->make()->toArray();
+
+        $this
+              ->actingAs($user)
+              ->post(route('post.store'),
+                  array_merge($data, ['tags' => $tags->pluck('id')->toArray()])
+              )
+              ->assertSessionHas('message', 'new post has been created')
+              ->assertRedirect(route('post.index'));
+
+          $this->assertDatabaseHas('posts', $data);
+
+          $this->assertEquals(
+              $tags->pluck('id')->toArray(),
+              Post::where($data)->first()->tags()->pluck('id')->toArray()
+          );
+
+        $this->assertEquals(
+            request()->route()->middleware(),
+            $this->middlewares
         );
     }
 }
