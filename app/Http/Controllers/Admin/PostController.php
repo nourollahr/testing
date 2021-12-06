@@ -106,6 +106,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->tags()->detach();
+        $post->comments()->delete();
+        $post->delete();
+        return redirect()->route('post.index')->with('message', 'the post has been deleted');
     }
 }
