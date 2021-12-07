@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\UploadImageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SingleController;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ Route::post('/single/{post}/comment', [SingleController::class, 'comment'])
 
 Route::prefix('admin')->middleware('admin')->group(function() {
     Route::resource('post', PostController::class)->except('show');
+    Route::post('/upload', [UploadImageController::class, 'upload'])->name('upload');
 });
 
 Auth::routes();
