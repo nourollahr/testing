@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Middleware;
+namespace Tests\Feature\Middlewares;
 
 use App\Http\Middleware\CheckUserIsAdmin;
 use App\Models\User;
