@@ -8,10 +8,12 @@ class DurationOfReading
     private $wordLength;
     private $duration;
 
-    public function __construct(string $text)
+    public function setText(string $text)
     {
         $this->wordLength = count(explode(' ', $text));
         $this->duration = $this->wordLength * $this->timePerWord;
+
+        return $this;
     }
 
     public function getTimePerSeconds()

@@ -16,7 +16,8 @@ class DurationOfReadingTest extends TestCase
     {
         $text = 'this is for test';
 
-        $dor = new DurationOfReading($text);
+        $dor = new DurationOfReading();
+        $dor->setText($text);
 
         $this->assertEquals(4, $dor->getTimePerSeconds());
         $this->assertEquals(4/60, $dor->getTimePerMinute());

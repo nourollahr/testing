@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Mockery;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use App\Models\Post;
 
@@ -57,9 +59,29 @@ class PostTest extends TestCase
     {
         $post = Post::factory()->make();
 
-        $dor = new DurationOfReading($post->description);
+        $dor = new DurationOfReading();
+        $dor->setText($post->description);
 
         $this->assertEquals($post->readingDuration, $dor->getTimePerMinute());
+    }
+
+    public function testGetReadingDurationAttributeWithMocking()
+    {
+        $post = Post::factory()->make();
+
+        $mock = $this->mock(DurationOfReading::class, function (MockInterface $mock) use ($post) {
+            $mock->shouldReceive('setText')
+                ->with($post->description)
+                ->once()
+                ->andReturn($mock);
+
+            $mock
+                ->shouldReceive('getTimePerMinute')
+                ->once()
+                ->andReturn(20);
+        });
+
+        $this->assertEquals(20, $post->readingDuration);
     }
 
 }
