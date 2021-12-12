@@ -32,7 +32,7 @@ class Post extends Model
     public function getReadingDurationAttribute()
     {
         return app(DurationOfReading::class)
-            ->setText($this->title)
+            ->setText($this->description)
             ->getTimePerMinute();
     }
 }

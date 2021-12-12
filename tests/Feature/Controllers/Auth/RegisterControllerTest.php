@@ -17,12 +17,13 @@ class RegisterControllerTest extends TestCase
      */
     public function testUserCanRegister()
     {
+//        $this->withoutExceptionHandling();
         $data = User::factory()
             ->user()
             ->make(['email_verified_at' => null])
             ->toArray();
 
-        $password = 12345678;
+        $password = '12345678';
         Event::fake();
 
         $response = $this->post(route('register'), array_merge($data, [
