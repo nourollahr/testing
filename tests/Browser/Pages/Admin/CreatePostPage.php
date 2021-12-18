@@ -27,7 +27,7 @@ class CreatePostPage extends Page
     {
         $browser
             ->assertPathIs($this->url())
-            ->assertInputPresent('name')
+            ->assertInputPresent('title')
             ->assertInputPresent('description')
             ->assertInputPresent('tags')
             ->assertInputPresent('image')

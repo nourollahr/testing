@@ -27,7 +27,7 @@ Route::post('/single/{post}/comment', [SingleController::class, 'comment'])
     ->name('single.comment');
 
 //->middleware('admin')
-Route::prefix('admin')->middleware('admin')->group(function() {
+Route::prefix('admin')->group(function() {
     Route::resource('post', PostController::class)->except(['show']);
     Route::resource('tag', TagController::class)->except(['show']);
     Route::resource('user', UserController::class);

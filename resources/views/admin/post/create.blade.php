@@ -12,7 +12,7 @@
         @endif
         <div class="col-12 mb-3">
             <label class="form-label">title</label>
-            <input type="text" name="title" class="form-control"placeholder="title">
+            <input type="text" name="title" class="form-control" placeholder="title">
         </div>
         <div class="col-12 mb-3">
             <label class="form-label">description</label>
