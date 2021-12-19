@@ -42,11 +42,10 @@ class DatePicker extends BaseComponent
             ->with('.dp-days', function ($list) use ($day) {
                 $list->script("
                         $('button.dp-day:not(.dp-edge-day):contains($day)')
-                            .first().click();
+                        .first().click();
                     ");
             });
     }
-
     /**
      * Get the element shortcuts for the component.
      *
